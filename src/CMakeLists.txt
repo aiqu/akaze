@@ -95,7 +95,7 @@ target_link_libraries(akaze_compare AKAZE AKAZE_CUDA)
 
 # ============================================================================ #
 # Library installation
-install(TARGETS AKAZE AKAZE_CUDA DESTINATION lib)
+install(TARGETS AKAZE AKAZE_CUDA EXPORT ${TARGETS_EXPORT_NAME} DESTINATION lib)
 install(FILES
     lib/AKAZE.h
     lib/fed.h

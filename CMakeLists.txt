@@ -21,6 +21,39 @@ set(AKAZE_INSTALL_PREFIX "/usr/local/lib" CACHE PATH "Installation Directory")
 set(AKAZE_INCLUDE_PREFIX "/usr/local/include" CACHE PATH "Includes Directory")
 
 # ============================================================================ #
+# Installation related variables
+set(TARGETS_EXPORT_NAME CudaAKAZE)
+set(namespace "CudaAKAZE::")
+set(config_install_dir "share/${TARGETS_EXPORT_NAME}/cmake")
+set(generated_dir "${CMAKE_CURRENT_BINARY_DIR}/generated")
+set(project_config "${generated_dir}/${TARGETS_EXPORT_NAME}Config.cmake")
+set(CUDAAKAZE_LIBRARIES
+  ${namespace}AKAZE
+  ${namespace}AKAZE_CUDA
+)
+
+# ============================================================================ #
 # CPP sources
 message(STATUS ">>> Adding src subdirectory")
 add_subdirectory(src)
+
+# ============================================================================ #
+# Installation
+
+include(CMakePackageConfigHelpers)
+configure_package_config_file(
+  "cmake/Config.cmake.in"
+  "${project_config}"
+  INSTALL_DESTINATION "${config_install_dir}"
+  )
+
+install(
+  FILES "${project_config}"
+  DESTINATION "${config_install_dir}"
+  )
+
+install(
+  EXPORT ${TARGETS_EXPORT_NAME}
+  NAMESPACE ${namespace}
+  DESTINATION ${config_install_dir}
+)
